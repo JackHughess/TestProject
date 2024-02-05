@@ -7,38 +7,26 @@ import static frc.robot.Constants.motorControllers.rightMotor1;
 import static frc.robot.Constants.motorControllers.rightMotor2;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class PID {
 
     public static void limeLight() {
-   
-         DoublePublisher tx;
-         DoublePublisher ty;
-         DoublePublisher ta;
-         DoublePublisher tz;
-         
+
          NetworkTableInstance inst = NetworkTableInstance.getDefault();
          NetworkTable table = inst.getTable("limelight");
-
-         tx = table.getDoubleTopic("tx").publish();
-         ty = table.getDoubleTopic("ty").publish();
-         ta = table.getDoubleTopic("ta").publish();
-         tz = table.getDoubleTopic("tz").publish();
-
-         double x = 0;
-         double y = 0;
-         double area = 0;
-         double distance = 0;
-
-         tx.set(x);
-         ty.set(y);
-         ta.set(area);
-         tz.set(distance);
+   
+         final DoubleSubscriber tx = table.getDoubleTopic("tx").subscribe(0);
+         final DoubleSubscriber ty = table.getDoubleTopic("ty").subscribe(0);
+         final DoubleSubscriber ta = table.getDoubleTopic("ta").subscribe(0);
+         final DoubleSubscriber tz = table.getDoubleTopic("tz").subscribe(0);
+      
+         double x = tx.get();
+         double y = ty.get();
+         double area = ta.get();
+         double distance = tz.get();
 
          System.out.println(x);
 
