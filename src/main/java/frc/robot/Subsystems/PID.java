@@ -2,9 +2,7 @@ package frc.robot.Subsystems;
 
 import static frc.robot.Constants.motorControllers.controller;
 import static frc.robot.Constants.motorControllers.leftMotor1;
-import static frc.robot.Constants.motorControllers.leftMotor2;
 import static frc.robot.Constants.motorControllers.rightMotor1;
-import static frc.robot.Constants.motorControllers.rightMotor2;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.DoubleSubscriber;
@@ -13,16 +11,16 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class PID {
 
+         public static final NetworkTableInstance inst = NetworkTableInstance.getDefault();
+         public static final NetworkTable table = inst.getTable("limelight");
+   
+         public static final DoubleSubscriber tx = table.getDoubleTopic("tx").subscribe(0);
+         public  static final DoubleSubscriber ty = table.getDoubleTopic("ty").subscribe(0);
+         public static final DoubleSubscriber ta = table.getDoubleTopic("ta").subscribe(0);
+         public static final DoubleSubscriber tz = table.getDoubleTopic("tz").subscribe(0);
+
     public static void limeLight() {
 
-         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-         NetworkTable table = inst.getTable("limelight");
-   
-         final DoubleSubscriber tx = table.getDoubleTopic("tx").subscribe(0);
-         final DoubleSubscriber ty = table.getDoubleTopic("ty").subscribe(0);
-         final DoubleSubscriber ta = table.getDoubleTopic("ta").subscribe(0);
-         final DoubleSubscriber tz = table.getDoubleTopic("tz").subscribe(0);
-      
          double x = tx.get();
          double y = ty.get();
          double area = ta.get();
