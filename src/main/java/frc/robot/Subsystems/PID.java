@@ -15,10 +15,10 @@ public class PID {
          public static final NetworkTable table = inst.getTable("limelight");
    
          public static final DoubleSubscriber tx = table.getDoubleTopic("tx").subscribe(0);
-         public  static final DoubleSubscriber ty = table.getDoubleTopic("ty").subscribe(0);
+         public static final DoubleSubscriber ty = table.getDoubleTopic("ty").subscribe(0);
          public static final DoubleSubscriber ta = table.getDoubleTopic("ta").subscribe(0);
          public static final DoubleSubscriber tz = table.getDoubleTopic("tz").subscribe(0);
-
+         public static double lastx = 0;
     public static void limeLight() {
 
          double x = tx.get();
@@ -28,29 +28,45 @@ public class PID {
 
          System.out.println(x);
 
-         double kP = 0.009;
-         double kI = 0.0;
-         double kD = 0;
+         double ckP = 0.009;
+         double ckI = 0.00;
+         double ckD = 0;
+
+         double mkP = 0.1;
+         double mkI = 0;
+         double mkD = 0;
+
          double error = x;
          boolean foundTag = false;
 
-         PIDController centerRobot = new PIDController(kP, kI, kD);
-         PIDController moveTowardTag = new PIDController(kP, kI, kD);
+         PIDController centerRobot = new PIDController(ckP, ckI, ckD);
+         PIDController moveTowardTag = new PIDController(mkP, mkI, mkD);
          System.out.println("center Robot Output =" + centerRobot.calculate(error, 0));
-         System.out.println("Move Toward Tag Output =" + moveTowardTag.calculate(distance, 0.4));
-
+         System.out.println("Move Toward Tag Output =" + moveTowardTag.calculate(distance, 1.5));
+         if(x != 0){
+            lastx = x;
+         }
         if (controller.getAButton() == true) {
          if (x == 0 && y == 0 && distance == 0) {
-            leftMotor1.set(0.3);
-            rightMotor1.set(-0.3);
+            if (lastx > 0) {
+            leftMotor1.set(0.15);
+            rightMotor1.set(-0.15);
+            } else if (lastx < 0) {
+               leftMotor1.set(-0.15);
+            rightMotor1.set(0.15);
+            } else {
+            leftMotor1.set(0.15);
+            rightMotor1.set(-0.15);
+            }
         } else {
          foundTag = true;
-        }
+      }
          
         if (foundTag == true) {
-         if (Math.abs(error) < 5) {
-         leftMotor1.set(moveTowardTag.calculate(distance, 0.4));
-         rightMotor1.set(moveTowardTag.calculate(distance, 0.4));
+            if (Math.abs(x) < 10) {
+               leftMotor1.set(-0.2);
+               rightMotor1.set(-0.2);
+       
          } else {
             if (error > 0 ) {
             leftMotor1.set(centerRobot.calculate(error, 0 ));
@@ -62,6 +78,9 @@ public class PID {
          }
          }
         }
-      }
+        }
+        System.out.println("lastx" +lastx);
       }
    }
+      
+   
