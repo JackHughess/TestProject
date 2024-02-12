@@ -26,8 +26,6 @@ public class PID {
          double area = ta.get();
          double distance = tz.get();
 
-         System.out.println(x);
-
          double ckP = 0.009;
          double ckI = 0.00;
          double ckD = 0;
@@ -41,19 +39,18 @@ public class PID {
 
          PIDController centerRobot = new PIDController(ckP, ckI, ckD);
          PIDController moveTowardTag = new PIDController(mkP, mkI, mkD);
-         System.out.println("center Robot Output =" + centerRobot.calculate(error, 0));
-         System.out.println("Move Toward Tag Output =" + moveTowardTag.calculate(distance, 1.5));
+        
          if(x != 0){
             lastx = x;
          }
-        if (controller.getAButton() == true) {
+
          if (x == 0 && y == 0 && distance == 0) {
             if (lastx > 0) {
+            leftMotor1.set(-0.15);
+            rightMotor1.set(0.15);
+            } else if (lastx < 0) {
             leftMotor1.set(0.15);
             rightMotor1.set(-0.15);
-            } else if (lastx < 0) {
-               leftMotor1.set(-0.15);
-            rightMotor1.set(0.15);
             } else {
             leftMotor1.set(0.15);
             rightMotor1.set(-0.15);
@@ -64,8 +61,8 @@ public class PID {
          
         if (foundTag == true) {
             if (Math.abs(x) < 10) {
-               leftMotor1.set(-0.2);
-               rightMotor1.set(-0.2);
+              leftMotor1.set(-0.2);
+              rightMotor1.set(-0.2);
        
          } else {
             if (error > 0 ) {
@@ -79,8 +76,7 @@ public class PID {
          }
         }
         }
-        System.out.println("lastx" +lastx);
       }
-   }
-      
+   
+   
    

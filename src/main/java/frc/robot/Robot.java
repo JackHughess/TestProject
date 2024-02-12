@@ -40,7 +40,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {}
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    PID.limeLight();
+  }
 
   @Override
   public void teleopInit() {}
@@ -48,7 +50,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Drivetrain.tankDrive();
-    PID.limeLight();
   }
   @Override
   public void disabledInit() {}
