@@ -24,6 +24,7 @@ public class Robot extends TimedRobot {
    */
   public static double startTime;
   public static double time;
+  private Drivetrain drivetrain;
   
   @Override
   public void robotInit() {
@@ -31,6 +32,7 @@ public class Robot extends TimedRobot {
    rightMotor2.follow(rightMotor1);
    rightMotor1.setInverted(true);
    rightMotor2.setInverted(true);
+   drivetrain = new Drivetrain();
   }
 
   @Override
@@ -48,6 +50,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Drivetrain.tankDrive();
+    drivetrain.kinematicDrive(null);
     PID.limeLight();
   }
   @Override
